@@ -2,11 +2,12 @@
 name: 'Deploy resources with Terraform'
 
 on:
+  push:
   workflow_dispatch:
     inputs:
       action:
         description: 'Choose action: apply or destroy'
-        required: true
+        required: false
         default: 'apply'
         type: choice
         options:
@@ -45,26 +46,26 @@ jobs:
       uses: hashicorp/setup-terraform@v3
       
     - name: Terraform Init
-      run: terraform init
+      run: terraform -chdir=lessons/day26/dev init
  
     # - name: Terraform Format
     #   run: terraform fmt -check
  
-    - name: Terraform Plan
-      run: terraform plan -out=tfplan
-    - name: Terraform Apply
-      if: ${{ github.event.inputs.action == 'apply' }}
-      run: |
-          echo "Running terraform apply..."
-          terraform init
-          terraform apply -auto-approve
+    # - name: Terraform Plan
+    #   run: terraform plan -out=tfplan
+    # - name: Terraform Apply
+    #   if: ${{ github.event.inputs.action == 'apply' }}
+    #   run: |
+    #       echo "Running terraform apply..."
+    #       terraform init
+    #       terraform apply -auto-approve
           
-    - name: Terraform Destroy
-      if: ${{ github.event.inputs.action == 'destroy' }}
-      run: |
-          echo "Running terraform destroy..."
-          terraform init
-          terraform destroy -auto-approve
+    # - name: Terraform Destroy
+    #   if: ${{ github.event.inputs.action == 'destroy' }}
+    #   run: |
+    #       echo "Running terraform destroy..."
+    #       terraform init
+    #       terraform destroy -auto-approve
        
       
 
